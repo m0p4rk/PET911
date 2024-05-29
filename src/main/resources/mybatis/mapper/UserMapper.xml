@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.m0p4rk.pet911.mapper.UserMapper">
+    <resultMap id="UserResultMap" type="User">
+        <id property="id" column="id"/>
+        <result property="username" column="username"/>
+        <result property="email" column="email"/>
+        <result property="password" column="password"/>
+        <result property="phoneNumber" column="phone_number"/>
+        <result property="provider" column="provider"/>
+        <result property="providerId" column="provider_id"/>
+        <result property="role" column="role"/>
+        <result property="createdAt" column="created_at"/>
+    </resultMap>
+
+    <select id="findById" resultMap="UserResultMap">
+        SELECT * FROM User WHERE id = #{id}
+    </select>
+
+    <select id="findAll" resultMap="UserResultMap">
+        SELECT * FROM User
+    </select>
+
+    <insert id="insert" useGeneratedKeys="true" keyProperty="id">
+        INSERT INTO User(username, email, password, phone_number, provider, provider_id, role)
+        VALUES(#{username}, #{email}, #{password}, #{phoneNumber}, #{provider}, #{providerId}, #{role})
+    </insert>
+
+    <update id="update">
+        UPDATE User SET
+                        username = #{username},
+                        email = #{email},
+                        password = #{password},
+                        phone_number = #{phoneNumber},
+                        provider = #{provider},
+                        provider_id = #{providerId},
+                        role = #{role}
+        WHERE id = #{id}
+    </update>
+
+    <delete id="delete">
+        DELETE FROM User WHERE id = #{id}
+    </delete>
+</mapper>
