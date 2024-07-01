@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Pet Form</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}">
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container" style="margin-top: 60px;">
+    <h1>Add/Edit Pet</h1>
+    <form th:action="@{/pets/new}" th:object="${petDTO}" method="post">
+        <div class="form-group">
+            <label for="name">Name</label>
+            <input type="text" id="name" th:field="*{name}" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="species">Species</label>
+            <input type="text" id="species" th:field="*{species}" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="breed">Breed</label>
+            <input type="text" id="breed" th:field="*{breed}" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" th:field="*{age}" class="form-control"/>
+        </div>
+        <div class="form-group">
+            <label for="weight">Weight</label>
+            <input type="number" step="0.01" id="weight" th:field="*{weight}" class="form-control"/>
+        </div>
+        <button type="submit" class="btn btn-primary">Save</button>
+    </form>
+</div>
+<script th:src="@{/js/bootstrap.bundle.min.js}"></script>
+</body>
+</html>

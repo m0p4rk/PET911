@@ -19,6 +19,10 @@
         SELECT * FROM User WHERE id = #{id}
     </select>
 
+    <select id="findByEmail" resultMap="UserResultMap">
+        SELECT * FROM User WHERE email = #{email}
+    </select>
+
     <select id="findAll" resultMap="UserResultMap">
         SELECT * FROM User
     </select>
@@ -44,3 +48,5 @@
         DELETE FROM User WHERE id = #{id}
     </delete>
 </mapper>
+
+<!--Parameter Binding for security enhancement : reason? -->

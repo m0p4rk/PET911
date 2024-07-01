@@ -1,11 +1,14 @@
 package com.m0p4rk.pet911.service.impl;
 
+import com.m0p4rk.pet911.dto.LoginDTO;
 import com.m0p4rk.pet911.dto.RegisterDTO;
 import com.m0p4rk.pet911.dto.UserDTO;
+import com.m0p4rk.pet911.dto.UserSessionDTO;
 import com.m0p4rk.pet911.mapper.UserMapper;
+import com.m0p4rk.pet911.mapper.util.UserMapperUtil;
 import com.m0p4rk.pet911.model.User;
 import com.m0p4rk.pet911.service.UserService;
-import com.m0p4rk.pet911.mapper.util.UserMapperUtil;
+import jakarta.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,9 @@ public class UserServiceImpl implements UserService {
 
     @Autowired
     private PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private HttpSession session;
 
     @Override
     public UserDTO findById(Long id) {
@@ -42,7 +48,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(registerDTO.getPassword()));
         user.setPhoneNumber(registerDTO.getPhoneNumber());
         user.setRole("USER");
-        // createdAt은 자동으로 설정됨
         userMapper.insert(user);
     }
 
@@ -55,5 +60,21 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUser(Long id) {
         userMapper.delete(id);
+    }
+
+    @Override
+    public boolean authenticateUser(LoginDTO loginDTO) {
+        User user = userMapper.findByEmail(loginDTO.getEmail());
+        if (user != null && passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
+            UserSessionDTO userSession = new UserSessionDTO(user.getId(), user.getUsername(), user.getEmail());
+            session.setAttribute("user", userSession); // 세션에 필요한 정보만 저장
+            return true;
+        }
+        return false;
+    }
+
+
+    public void logoutUser() {
+        session.invalidate(); // 세션 무효화
     }
 }
