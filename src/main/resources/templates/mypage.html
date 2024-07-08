@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Page - Pet911</title>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@400&display=swap" rel="stylesheet">
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/styles.css}">
+
+    <script src="/js/darkMode.js"></script>
+</head>
+<body>
+<div th:replace="fragments/navbar :: navbar"></div>
+
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="profile-card">
+                <h2 class="text-center mb-4">내 프로필</h2>
+                <div th:if="${message}" class="alert alert-success" th:text="${message}"></div>
+                <form th:action="@{/mypage/update}" th:object="${user}" method="post">
+                    <input type="hidden" th:field="*{id}">
+                    <div class="form-group">
+                        <label for="username">사용자 이름:</label>
+                        <input type="text" th:field="*{username}" class="form-control" id="username" required>
+                        <small style="color: red"><em>Provider가 존재 시 변경 불가능하게 제한해야함 - 중복이슈</em></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="email">이메일:</label>
+                        <input type="email" th:field="*{email}" class="form-control" id="email" required>
+                        <small style="color: red"><em>이메일 인증 기능을 구현해야함 - 보안이슈</em></small>
+                    </div>
+                    <div class="form-group">
+                        <label for="phoneNumber">전화번호:</label>
+                        <input type="tel" th:field="*{phoneNumber}" class="form-control" id="phoneNumber">
+                        <small style="color: red"><em>전화번호 인증 기능을 구현해야함 - 보안이슈</em></small>
+                    </div>
+                    <button type="submit" class="btn btn-primary btn-block">프로필 업데이트</button>
+                </form>
+                <hr>
+                <h3 class="mt-4">비밀번호 변경</h3>
+                <small style="color: red"><em>Provider가 존재 시 비밀번호 변경을 비활성화</em></small>
+                <form th:action="@{/mypage/change-password}" method="post">
+                    <div class="form-group">
+                        <label for="currentPassword">현재 비밀번호:</label>
+                        <input type="password" name="currentPassword" class="form-control" id="currentPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="newPassword">새 비밀번호:</label>
+                        <input type="password" name="newPassword" class="form-control" id="newPassword" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="confirmPassword">새 비밀번호 확인:</label>
+                        <input type="password" name="confirmPassword" class="form-control" id="confirmPassword" required>
+                    </div>
+                    <button type="submit" class="btn btn-secondary btn-block">비밀번호 변경</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div th:replace="fragments/footer :: footer"></div>
+
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

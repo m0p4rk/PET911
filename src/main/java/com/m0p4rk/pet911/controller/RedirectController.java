@@ -12,4 +12,9 @@ public class RedirectController {
         return "home";
     }
 
+    @GetMapping("/schemerguides")
+    public String searchPage() {
+        return "emergencyguide";
+    }
+
 }

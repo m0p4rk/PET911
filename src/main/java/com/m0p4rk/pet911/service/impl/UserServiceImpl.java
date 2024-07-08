@@ -14,6 +14,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @Service
@@ -67,13 +68,30 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.findByEmail(loginDTO.getEmail());
         if (user != null && passwordEncoder.matches(loginDTO.getPassword(), user.getPassword())) {
             UserSessionDTO userSession = new UserSessionDTO(user.getId(), user.getUsername(), user.getEmail());
-            session.setAttribute("user", userSession); // 세션에 필요한 정보만 저장
+            session.setAttribute("user", userSession);
             return true;
         }
         return false;
     }
 
+    @Override
+    public UserSessionDTO findOrCreateKakaoUser(String email, String nickname) {
+        User user = userMapper.findByEmail(email);
+        if (user == null) {
+            user = new User();
+            user.setEmail(email);
+            user.setUsername(nickname);
+            user.setPassword(passwordEncoder.encode(UUID.randomUUID().toString())); // 랜덤 비밀번호 생성
+            user.setProvider("kakao");
+            user.setRole("USER");
+            user.setProviderId(email); // 카카오 이메일을 providerId로 사용
+            userMapper.insert(user);
+            user = userMapper.findByEmail(email); // 새로 삽입된 사용자의 ID를 얻기 위해
+        }
+        return new UserSessionDTO(user.getId(), user.getUsername(), user.getEmail());
+    }
 
+    @Override
     public void logoutUser() {
         session.invalidate(); // 세션 무효화
     }

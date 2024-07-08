@@ -1,6 +1,7 @@
 package com.m0p4rk.pet911.mapper.util;
 
 import com.m0p4rk.pet911.dto.UserDTO;
+import com.m0p4rk.pet911.dto.UserSessionDTO;
 import com.m0p4rk.pet911.model.User;
 
 import java.sql.Timestamp;
@@ -38,6 +39,40 @@ public class UserMapperUtil {
         user.setProviderId(userDTO.getProviderId());
         user.setRole(userDTO.getRole());
         // createdAt은 DB에서 자동으로 설정됨
+        return user;
+    }
+
+    // UserDTO를 UserSessionDTO로 변환
+    public static UserSessionDTO mapToSessionDTO(UserDTO userDTO) {
+        if (userDTO == null) {
+            return null;
+        }
+        return new UserSessionDTO(userDTO.getId(), userDTO.getUsername(), userDTO.getEmail());
+    }
+
+    // UserSessionDTO를 UserDTO로 변환
+    public static UserDTO mapToFullDTO(UserSessionDTO userSessionDTO) {
+        if (userSessionDTO == null) {
+            return null;
+        }
+        UserDTO userDTO = new UserDTO();
+        userDTO.setId(userSessionDTO.getId());
+        userDTO.setUsername(userSessionDTO.getUsername());
+        userDTO.setEmail(userSessionDTO.getEmail());
+        // 다른 필드들은 null 또는 기본값으로 설정됩니다.
+        return userDTO;
+    }
+
+    // UserSessionDTO를 User 엔티티로 변환
+    public static User mapSessionToEntity(UserSessionDTO userSessionDTO) {
+        if (userSessionDTO == null) {
+            return null;
+        }
+        User user = new User();
+        user.setId(userSessionDTO.getId());
+        user.setUsername(userSessionDTO.getUsername());
+        user.setEmail(userSessionDTO.getEmail());
+        // 다른 필드들은 null 또는 기본값으로 설정됩니다.
         return user;
     }
 }

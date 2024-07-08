@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" lang="ko">
 <head>
     <meta charset="UTF-8">
-    <!-- Bootstrap CSS CDN -->
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 </head>
 <body>
 <nav th:fragment="navbar" class="navbar navbar-expand-lg navbar-light bg-light fixed-top">
@@ -14,7 +13,7 @@
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
             <ul class="navbar-nav mr-auto">
-                <li class="nav-item" th:if="${session.user != null}">
+                <li class="nav-item">
                     <a class="nav-link" th:href="@{/pets}">My Pet</a>
                 </li>
                 <li class="nav-item">
@@ -32,10 +31,15 @@
                     <a class="nav-link" th:href="@{/register}">Sign Up</a>
                 </li>
                 <li class="nav-item" th:if="${session.user != null}">
-                    <a class="nav-link" th:text="'Welcome, ' + ${session.user.username}" href="#"></a>
+                    <a class="nav-link" th:text="'Welcome, ' + ${session.user.username}" th:href="@{/mypage}"></a>
                 </li>
                 <li class="nav-item" th:if="${session.user != null}">
                     <a style="color: red" class="nav-link" th:href="@{/logout}">Logout</a>
+                </li>
+                <li class="nav-item">
+                    <button id="darkModeToggle" class="btn btn-outline-secondary">
+                        <i class="fas fa-moon"></i>
+                    </button>
                 </li>
             </ul>
         </div>

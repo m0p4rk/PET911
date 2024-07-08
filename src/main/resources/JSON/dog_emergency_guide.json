@@ -1,0 +1,144 @@
+[
+  {
+    "species": "Dog",
+    "symptoms": "Vomiting",
+    "guide": [
+      {
+        "guide_step": 1,
+        "guide_text": "Remove food and water for 12-24 hours."
+      },
+      {
+        "guide_step": 2,
+        "guide_text": "Gradually reintroduce small amounts of water."
+      },
+      {
+        "guide_step": 3,
+        "guide_text": "If vomiting persists, seek veterinary care immediately."
+      },
+      {
+        "guide_step": 4,
+        "guide_text": "Monitor for signs of dehydration."
+      }
+    ],
+    "additional_info": "Vomiting in dogs can be caused by dietary indiscretion, infections, or more serious conditions like pancreatitis or kidney disease."
+  },
+  {
+    "species": "Dog",
+    "symptoms": "Diarrhea",
+    "guide": [
+      {
+        "guide_step": 1,
+        "guide_text": "Remove food for 12-24 hours."
+      },
+      {
+        "guide_step": 2,
+        "guide_text": "Provide small amounts of water or electrolyte solution."
+      },
+      {
+        "guide_step": 3,
+        "guide_text": "Gradually reintroduce a bland diet."
+      },
+      {
+        "guide_step": 4,
+        "guide_text": "If diarrhea persists, seek veterinary care immediately."
+      },
+      {
+        "guide_step": 5,
+        "guide_text": "Monitor for signs of dehydration."
+      }
+    ],
+    "additional_info": "Diarrhea in dogs can result from dietary changes, infections, or underlying medical conditions. Monitor your dog's stool and overall condition closely."
+  },
+  {
+    "species": "Dog",
+    "symptoms": "Seizures",
+    "guide": [
+      {
+        "guide_step": 1,
+        "guide_text": "Keep the dog away from any objects that might cause injury."
+      },
+      {
+        "guide_step": 2,
+        "guide_text": "Do not try to hold or restrain the dog during a seizure."
+      },
+      {
+        "guide_step": 3,
+        "guide_text": "Time the seizure if possible."
+      },
+      {
+        "guide_step": 4,
+        "guide_text": "After the seizure, keep the dog calm and seek veterinary care immediately."
+      }
+    ],
+    "additional_info": "Seizures in dogs can be caused by epilepsy, toxins, brain tumors, or metabolic disorders. Veterinary evaluation is crucial for determining the cause and appropriate treatment."
+  },
+  {
+    "species": "Dog",
+    "symptoms": "Bleeding",
+    "guide": [
+      {
+        "guide_step": 1,
+        "guide_text": "Apply direct pressure to the wound with a clean cloth or bandage."
+      },
+      {
+        "guide_step": 2,
+        "guide_text": "Keep the dog calm and immobile."
+      },
+      {
+        "guide_step": 3,
+        "guide_text": "Seek veterinary care immediately."
+      },
+      {
+        "guide_step": 4,
+        "guide_text": "Monitor for signs of shock (pale gums, rapid heartbeat, weakness)."
+      }
+    ],
+    "additional_info": "Bleeding in dogs can result from injuries, surgical complications, or certain medical conditions. Quick and effective first aid can be lifesaving."
+  },
+  {
+    "species": "Dog",
+    "symptoms": "Difficulty Breathing",
+    "guide": [
+      {
+        "guide_step": 1,
+        "guide_text": "Keep the dog calm and comfortable."
+      },
+      {
+        "guide_step": 2,
+        "guide_text": "Avoid any stress or physical activity."
+      },
+      {
+        "guide_step": 3,
+        "guide_text": "Seek veterinary care immediately."
+      },
+      {
+        "guide_step": 4,
+        "guide_text": "Monitor for cyanosis (blue-tinged gums) and other signs of distress."
+      }
+    ],
+    "additional_info": "Causes of breathing difficulties in dogs include respiratory infections, allergic reactions, heart disease, and obstructions. Rapid intervention is crucial."
+  },
+  {
+    "species": "Dog",
+    "symptoms": "Ingestion of Toxins",
+    "guide": [
+      {
+        "guide_step": 1,
+        "guide_text": "Identify the substance ingested and the amount if possible."
+      },
+      {
+        "guide_step": 2,
+        "guide_text": "Do not induce vomiting unless instructed by a veterinarian."
+      },
+      {
+        "guide_step": 3,
+        "guide_text": "Seek veterinary care immediately."
+      },
+      {
+        "guide_step": 4,
+        "guide_text": "Bring the packaging or a sample of the substance to the vet."
+      }
+    ],
+    "additional_info": "Common toxins for dogs include certain foods (e.g., chocolate, grapes), household chemicals, and medications. Rapid veterinary intervention can be critical."
+  }
+]

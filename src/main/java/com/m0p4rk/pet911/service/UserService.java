@@ -3,6 +3,7 @@ package com.m0p4rk.pet911.service;
 import com.m0p4rk.pet911.dto.LoginDTO;
 import com.m0p4rk.pet911.dto.RegisterDTO;
 import com.m0p4rk.pet911.dto.UserDTO;
+import com.m0p4rk.pet911.dto.UserSessionDTO;
 
 import java.util.List;
 
@@ -14,4 +15,5 @@ public interface UserService {
     void deleteUser(Long id);
     boolean authenticateUser(LoginDTO loginDTO);
     void logoutUser();
+    UserSessionDTO findOrCreateKakaoUser(String email, String nickname);
 }

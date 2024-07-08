@@ -14,6 +14,6 @@ public class HospitalController {
     @GetMapping("/schhospitals")
     public String searchPage(Model model) {
         model.addAttribute("kakaoApiKey", kakaoApiKey);
-        return "hospitalSearch";
+        return "hospital";
     }
 }

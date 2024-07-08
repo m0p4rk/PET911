@@ -1,63 +1,101 @@
 package com.m0p4rk.pet911.api;
 
+import com.m0p4rk.pet911.dto.UserSessionDTO;
+import com.m0p4rk.pet911.service.UserService;
+import jakarta.servlet.http.HttpSession;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.reactive.function.client.WebClient;
-import org.springframework.web.reactive.function.client.WebClientResponseException;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import java.net.URI;
+import java.util.Map;
 
 @Controller
 public class KakaoAPI {
 
+    private static final Logger logger = LoggerFactory.getLogger(KakaoAPI.class);
+
     @Value("${api.key.kakao.rest}")
     private String kakaoRestApiKey;
 
+    @Value("${kakao.redirect.uri}")
+    private String kakaoRedirectUri;
+
     private final WebClient webClient;
+    private final UserService userService;
 
-    public KakaoAPI(WebClient.Builder webClientBuilder) {
-        this.webClient = webClientBuilder.baseUrl("https://apis-navi.kakaomobility.com").build();
+    @Autowired
+    public KakaoAPI(WebClient.Builder webClientBuilder, UserService userService) {
+        this.webClient = webClientBuilder.baseUrl("https://kauth.kakao.com").build();
+        this.userService = userService;
     }
 
-    @GetMapping("/api/kakao-key")
-    @ResponseBody
-    public String getKakaoApiKey() {
-        return kakaoRestApiKey;
+    @GetMapping("/auth/kakao")
+    public String kakaoLogin() {
+        String kakaoAuthUrl = "https://kauth.kakao.com/oauth/authorize" +
+                "?client_id=" + kakaoRestApiKey +
+                "&redirect_uri=" + kakaoRedirectUri +
+                "&response_type=code";
+        return "redirect:" + kakaoAuthUrl;
     }
 
-    @GetMapping("/api/route")
-    @ResponseBody
-    public ResponseEntity<String> getRoute(@RequestParam double startX, @RequestParam double startY,
-                                           @RequestParam double endX, @RequestParam double endY) {
+    @GetMapping("/login/kakao/callback")
+    public String kakaoCallback(@RequestParam String code, HttpSession session, RedirectAttributes redirectAttributes) {
         try {
-            String response = this.webClient.get()
-                    .uri(uriBuilder -> uriBuilder.path("/v1/directions")
-                            .queryParam("origin", startX + "," + startY) // 경도, 위도 순서
-                            .queryParam("destination", endX + "," + endY) // 경도, 위도 순서
-                            .queryParam("priority", "RECOMMEND")
-                            .queryParam("car_fuel", "GASOLINE")
-                            .queryParam("car_hipass", "false")
-                            .queryParam("alternatives", "false")
-                            .queryParam("road_details", "false")
-                            .build())
-                    .header("Authorization", "KakaoAK " + kakaoRestApiKey)
-                    .header("Content-Type", "application/json")
-                    .retrieve()
-                    .bodyToMono(String.class)
-                    .block();
+            String accessToken = getKakaoAccessToken(code);
+            Map<String, Object> userInfo = getKakaoUserInfo(accessToken);
+            logger.info("Kakao user info retrieved: {}", userInfo);
 
-            return ResponseEntity.ok(response);
-        } catch (WebClientResponseException e) {
-            e.printStackTrace(); // 서버 로그에 오류를 출력
-            return ResponseEntity.status(e.getStatusCode()).body("Kakao API call failed: " + e.getResponseBodyAsString());
+            UserSessionDTO userSessionDTO = processKakaoUser(userInfo);
+            session.setAttribute("user", userSessionDTO);
+
+            redirectAttributes.addFlashAttribute("message", "카카오 로그인 성공!");
+            return "redirect:/";
         } catch (Exception e) {
-            e.printStackTrace(); // 서버 로그에 오류를 출력
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Kakao API call failed: " + e.getMessage());
+            logger.error("Error during Kakao login process", e);
+            redirectAttributes.addFlashAttribute("error", "로그인 중 오류가 발생했습니다: " + e.getMessage());
+            return "redirect:/login";
         }
+    }
+
+    private String getKakaoAccessToken(String code) {
+        return webClient.post()
+                .uri(uriBuilder -> uriBuilder
+                        .path("/oauth/token")
+                        .queryParam("grant_type", "authorization_code")
+                        .queryParam("client_id", kakaoRestApiKey)
+                        .queryParam("redirect_uri", kakaoRedirectUri)
+                        .queryParam("code", code)
+                        .build())
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {})
+                .map(response -> (String) response.get("access_token"))
+                .block();
+    }
+
+    private Map<String, Object> getKakaoUserInfo(String accessToken) {
+        return WebClient.create("https://kapi.kakao.com")
+                .get()
+                .uri("/v2/user/me")
+                .header("Authorization", "Bearer " + accessToken)
+                .retrieve()
+                .bodyToMono(new ParameterizedTypeReference<Map<String, Object>>() {})
+                .block();
+    }
+
+    private UserSessionDTO processKakaoUser(Map<String, Object> kakaoUserInfo) {
+        Map<String, Object> properties = (Map<String, Object>) kakaoUserInfo.get("properties");
+        Map<String, Object> kakaoAccount = (Map<String, Object>) kakaoUserInfo.get("kakao_account");
+
+        String email = (String) kakaoAccount.get("email");
+        String nickname = (String) properties.get("nickname");
+
+        return userService.findOrCreateKakaoUser(email, nickname);
     }
 }
