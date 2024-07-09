@@ -25,11 +25,6 @@ public class EmergencyGuideServiceImpl implements EmergencyGuideService {
     }
 
     @Override
-    public List<EmergencyGuide> findBySpeciesAndSymptoms(String species, String symptoms) {
-        return emergencyGuideMapper.findBySpeciesAndSymptoms(species, symptoms);
-    }
-
-    @Override
     public List<EmergencyGuide> findAll() {
         return emergencyGuideMapper.findAll();
     }
@@ -50,14 +45,24 @@ public class EmergencyGuideServiceImpl implements EmergencyGuideService {
     }
 
     @Override
-    public Optional<EmergencyGuide> findBySpeciesAndSymptomsAndGuideStep(String species, String symptoms, int guideStep) {
-        return emergencyGuideMapper.findBySpeciesAndSymptomsAndGuideStep(species, symptoms, guideStep);
+    public List<EmergencyGuide> findBySpeciesNameAndSymptoms(String name, String symptoms) {
+        return emergencyGuideMapper.findBySpeciesNameAndSymptoms(name, symptoms);
+    }
+
+    @Override
+    public List<EmergencyGuide> findBySpeciesIdAndSymptoms(Long speciesId, String symptoms) {
+        return emergencyGuideMapper.findBySpeciesIdAndSymptoms(speciesId, symptoms);
+    }
+
+    @Override
+    public Optional<EmergencyGuide> findBySpeciesIdAndSymptomsAndGuideStep(Long speciesId, String symptoms, int guideStep) {
+        return emergencyGuideMapper.findBySpeciesIdAndSymptomsAndGuideStep(speciesId, symptoms, guideStep);
     }
 
     @Override
     public void insertOrUpdate(EmergencyGuide emergencyGuide) {
-        Optional<EmergencyGuide> existingGuide = findBySpeciesAndSymptomsAndGuideStep(
-                emergencyGuide.getSpecies(),
+        Optional<EmergencyGuide> existingGuide = findBySpeciesIdAndSymptomsAndGuideStep(
+                emergencyGuide.getSpeciesId(),
                 emergencyGuide.getSymptoms(),
                 emergencyGuide.getGuideStep()
         );
@@ -85,6 +90,4 @@ public class EmergencyGuideServiceImpl implements EmergencyGuideService {
     public String getMostCommonSymptom() {
         return emergencyGuideMapper.findMostCommonSymptom();
     }
-
-
 }

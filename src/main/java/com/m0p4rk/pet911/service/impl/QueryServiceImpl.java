@@ -63,7 +63,7 @@ public class QueryServiceImpl implements QueryService {
     public QueryResponse provideHealthGuide(QueryRequest request) {
         String species = extractSpecies(request.getQuestionText());
         List<String> symptoms = extractSymptoms(request.getQuestionText());
-        List<EmergencyGuide> guides = emergencyGuideService.findBySpeciesAndSymptoms(species, String.join(",", symptoms));
+        List<EmergencyGuide> guides = emergencyGuideService.findBySpeciesNameAndSymptoms(species, String.join(",", symptoms));
 
         QueryResponse response = new QueryResponse();
         response.setCategory(QueryCategory.HEALTH_GUIDE);

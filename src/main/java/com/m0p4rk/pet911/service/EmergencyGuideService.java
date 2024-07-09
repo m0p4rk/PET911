@@ -9,8 +9,6 @@ public interface EmergencyGuideService {
 
     EmergencyGuide findById(Long id);
 
-    List<EmergencyGuide> findBySpeciesAndSymptoms(String species, String symptoms);
-
     List<EmergencyGuide> findAll();
 
     int insert(EmergencyGuide emergencyGuide);
@@ -19,7 +17,11 @@ public interface EmergencyGuideService {
 
     int delete(Long id);
 
-    Optional<EmergencyGuide> findBySpeciesAndSymptomsAndGuideStep(String species, String symptoms, int guideStep);
+    List<EmergencyGuide> findBySpeciesNameAndSymptoms(String name, String symptoms);
+
+    List<EmergencyGuide> findBySpeciesIdAndSymptoms(Long speciesId, String symptoms);
+
+    Optional<EmergencyGuide> findBySpeciesIdAndSymptomsAndGuideStep(Long speciesId, String symptoms, int guideStep);
 
     void insertOrUpdate(EmergencyGuide emergencyGuide);
 

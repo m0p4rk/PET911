@@ -40,7 +40,8 @@ public class EmergencyGuideController {
     public ResponseEntity<List<EmergencyGuide>> searchEmergencyGuide(
             @RequestParam String species,
             @RequestParam String symptom) {
-        List<EmergencyGuide> guide = emergencyGuideService.findBySpeciesAndSymptoms(species, symptom);
+        List<EmergencyGuide> guide = emergencyGuideService.findBySpeciesNameAndSymptoms(species,symptom);
+        System.out.println("guide callback result :" + guide);
         return ResponseEntity.ok(guide);
     }
 }

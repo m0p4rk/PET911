@@ -3,6 +3,8 @@ package com.m0p4rk.pet911.dto;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.sql.Timestamp;
+
 @Data
 @NoArgsConstructor
 public class PetDTO {
@@ -11,6 +13,7 @@ public class PetDTO {
     private String name;
     private String species;
     private String breed;
-    private int age;
-    private double weight;
+    private Integer age;
+    private Double weight;
+    private Timestamp createdAt;
 }

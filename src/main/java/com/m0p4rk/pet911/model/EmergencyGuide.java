@@ -14,7 +14,7 @@ import java.sql.Timestamp;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class EmergencyGuide {
     private Long id;
-    private String species;
+    private Long speciesId;
     private String symptoms;
 
     @JsonProperty("guide_step")
